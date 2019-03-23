@@ -10,6 +10,25 @@ var fccTestingRoutes  = require('./routes/fcctesting.js');
 var runner            = require('./test-runner');
 
 var app = express();
+/********Helmet*******/
+const helmet = require("helmet");
+app.use(helmet.hidePoweredBy({ setTo: 'PHP 4.2.0' }));
+app.use(helmet.frameguard({action: 'deny'}));
+app.use(helmet.xssFilter());
+app.use(helmet.noSniff());
+app.use(helmet.ieNoOpen());
+const ninetyDaysInMilliseconds = 90*24*60*60*1000;
+app.use(helmet.hsts({maxAge: ninetyDaysInMilliseconds, force: true}));
+app.use(helmet.dnsPrefetchControl());
+app.use(helmet.noCache());
+/*app.use(helmet.contentSecurityPolicy({
+                                      directives: {
+                                        defaultSrc: ["'self'", `code.jquery.com`], 
+                                        scriptSrc: ["'self'", `code.jquery.com`]
+                                      }
+}));*/
+
+/********helmet*******/
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
